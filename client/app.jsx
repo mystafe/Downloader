@@ -1,6 +1,5 @@
 function App() {
   const [url, setUrl] = React.useState('');
-  const [path, setPath] = React.useState('');
   const [message, setMessage] = React.useState('');
   const [isError, setIsError] = React.useState(false);
 
@@ -8,14 +7,18 @@ function App() {
     setMessage('');
     setIsError(false);
     try {
-      const res = await fetch('http://localhost:5000/download', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, savePath: path })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error');
-      setMessage(data.message);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch file');
+      const blob = await res.blob();
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = url.split('/').pop() || 'download';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(a.href);
+      setMessage('Download started');
     } catch (err) {
       setIsError(true);
       setMessage(err.message);
@@ -33,16 +36,6 @@ function App() {
           placeholder="https://example.com/file.zip"
           value={url}
           onChange={e => setUrl(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <label className="form-label">Save Path on Server</label>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="/path/to/file.zip"
-          value={path}
-          onChange={e => setPath(e.target.value)}
         />
       </div>
       <button className="btn btn-primary" onClick={handleDownload}>Download</button>
