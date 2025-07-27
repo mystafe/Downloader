@@ -10,6 +10,12 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
+// Endpoint to expose application version
+app.get('/version', (req, res) => {
+  const pkg = require('./package.json');
+  res.json({ version: pkg.version });
+});
+
 // Proxy endpoint to work around remote servers that do not send CORS headers
 app.get('/proxy', async (req, res) => {
   const { url } = req.query;
