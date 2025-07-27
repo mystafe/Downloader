@@ -10,6 +10,31 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
+// Proxy endpoint to work around remote servers that do not send CORS headers
+app.get('/proxy', async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).json({ error: 'url query parameter required' });
+  }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return res.status(response.status).end();
+    }
+    res.setHeader(
+      'Content-Type',
+      response.headers.get('content-type') || 'application/octet-stream'
+    );
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${path.basename(url)}"`
+    );
+    response.body.pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/download', async (req, res) => {
   const { url, savePath } = req.body;
   if (!url || !savePath) {
