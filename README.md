@@ -1,20 +1,16 @@
 # React URL Downloader
 
-This project provides a simple React-based interface to download a file from a given URL to a specific location on the server.
+This project provides a simple React-based interface to download a file from a given URL directly to your computer.
 
 ## Structure
 
-- `server/` – Express server that performs the actual download.
-- `client/` – Minimal React frontend that sends the download request.
+- `client/` – Minimal React frontend that fetches the file and lets the browser download it.
+- `server/` – (Optional) Express server used in the original version to download files on the server.
 
 ## Usage
 
-1. Install server dependencies:
-   ```bash
-   cd server && npm install
-   npm start
-   ```
-2. Serve the client (for example using `serve` or any static server) and open `client/index.html` in your browser.
-3. Enter the URL to download and the path where the file should be saved on the server.
+1. Serve the client (for example using `serve` or any static server) and open `client/index.html` in your browser.
+2. Enter the URL to download and click **Download**. Your browser will ask for a location to save the file.
 
-Ensure the server has permission to write to the specified path.
+The previous server-based downloader remains in the `server/` folder if you still need that functionality.
+When running the server, it reads the `PORT` value from a `.env` file if present, defaulting to `5000`.
