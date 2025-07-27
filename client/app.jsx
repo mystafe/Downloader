@@ -1,7 +1,17 @@
 function App() {
-  const [url, setUrl] = React.useState('');
+  const [url, setUrl] = React.useState(() =>
+    localStorage.getItem('downloadUrl') || ''
+  );
   const [message, setMessage] = React.useState('');
   const [isError, setIsError] = React.useState(false);
+  const [version, setVersion] = React.useState('');
+
+  React.useEffect(() => {
+    fetch('http://localhost:5000/version')
+      .then(res => res.json())
+      .then(data => setVersion(data.version))
+      .catch(() => {});
+  }, []);
 
   const handleDownload = async () => {
     setMessage('');
@@ -44,7 +54,10 @@ function App() {
           className="form-control"
           placeholder="https://example.com/file.zip"
           value={url}
-          onChange={e => setUrl(e.target.value)}
+          onChange={e => {
+            setUrl(e.target.value);
+            localStorage.setItem('downloadUrl', e.target.value);
+          }}
         />
       </div>
       <button className="btn btn-primary" onClick={handleDownload}>Download</button>
@@ -56,6 +69,9 @@ function App() {
           {message}
         </div>
       )}
+      <footer className="mt-5 text-center text-muted">
+        v{version} - Mustafa Evleksiz tarafından geliştirilmiştir
+      </footer>
     </div>
   );
 }

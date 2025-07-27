@@ -22,3 +22,9 @@ The server listens on port `5000` if no `PORT` is specified.
 `GET /proxy?url=<fileUrl>`
 
 Fetches the file at `fileUrl` and streams it back to the client. Use this when the remote server does not allow CORS.
+
+### Version endpoint
+
+`GET /version`
+
+Returns the current server version from `package.json`.
