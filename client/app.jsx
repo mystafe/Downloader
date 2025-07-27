@@ -7,8 +7,20 @@ function App() {
     setMessage('');
     setIsError(false);
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Failed to fetch file');
+      // Use the local server as a proxy so downloads work even when the remote host blocks CORS
+      const res = await fetch(
+        `http://localhost:5000/proxy?url=${encodeURIComponent(url)}`
+      );
+      if (!res.ok) {
+        let errMsg = 'Failed to fetch file';
+        try {
+          const data = await res.json();
+          if (data && data.error) errMsg = data.error;
+        } catch (_) {
+          // ignore JSON parse errors and use default message
+        }
+        throw new Error(errMsg);
+      }
       const blob = await res.blob();
       const a = document.createElement('a');
       a.href = window.URL.createObjectURL(blob);

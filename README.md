@@ -9,10 +9,13 @@ This project provides a simple React-based interface to download a file from a g
 
 ## Usage
 
-1. Serve the client (for example using `serve` or any static server) and open `client/index.html` in your browser.
-2. Enter the URL to download and click **Download**. Your browser will ask for a location to save the file.
+1. In `server/` run `npm install` and `npm start` to launch the proxy server.
+2. Serve the client (for example using `serve` or any static server) and open `client/index.html` in your browser.
+3. Enter the URL to download and click **Download**. Your browser will ask for a location to save the file.
 
-If the request completes in the Network tab but the app shows `Failed to fetch`, the target server likely does not permit cross-origin downloads. In that case run the Node server in `server/` or enable CORS on the remote server.
+The client always downloads files through the Node server's `/proxy` endpoint. This works even when the target server does not send CORS headers. The Express server already enables `CORS` with `origin: '*'`, so it can be accessed from any site.
+
+If you run the proxy on a different host or port, edit `client/app.jsx` to point to that server. When the proxy cannot reach a remote file (for example due to network restrictions) the app will show the error returned by the server.
 
 The previous server-based downloader remains in the `server/` folder if you still need that functionality.
 When running the server, it reads the `PORT` value from a `.env` file if present, defaulting to `5000`.
