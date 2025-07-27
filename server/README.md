@@ -23,4 +23,5 @@ The server listens on port `5000` if no `PORT` is specified.
 
 Fetches the file at `fileUrl` and streams it back to the client. Use this when the remote server does not allow CORS.
 
-The server responds with a JSON error if it cannot reach the requested URL (for example, when the target host is blocked).
+
+

@@ -17,5 +17,6 @@ The client always downloads files through the Node server's `/proxy` endpoint. T
 
 If you run the proxy on a different host or port, edit `client/app.jsx` to point to that server. When the proxy cannot reach a remote file (for example due to network restrictions) the app will show the error returned by the server.
 
-The previous server-based downloader remains in the `server/` folder if you still need that functionality.
+The provided Express server already enables `CORS` with `origin: '*'`, which allows requests from any site. Use it as a proxy if the remote host does not send the proper headers.
+
 When running the server, it reads the `PORT` value from a `.env` file if present, defaulting to `5000`.
