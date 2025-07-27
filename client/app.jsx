@@ -21,7 +21,13 @@ function App() {
       setMessage('Download started');
     } catch (err) {
       setIsError(true);
-      setMessage(err.message);
+      if (err instanceof TypeError && err.message === 'Failed to fetch') {
+        setMessage(
+          'Failed to fetch file. The server might not allow cross-origin requests.'
+        );
+      } else {
+        setMessage(err.message);
+      }
     }
   };
 
