@@ -1,6 +1,8 @@
 function App() {
+  const DEFAULT_URL =
+    'https://raw.githubusercontent.com/mediaelement/mediaelement-files/master/big_buck_bunny.mp4';
   const [url, setUrl] = React.useState(() =>
-    localStorage.getItem('downloadUrl') || ''
+    localStorage.getItem('downloadUrl') || DEFAULT_URL
   );
   const [message, setMessage] = React.useState('');
   const [isError, setIsError] = React.useState(false);
