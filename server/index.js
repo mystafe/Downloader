@@ -6,7 +6,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+// Allow requests from any origin so the downloader can be used cross-site
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.post('/download', async (req, res) => {
