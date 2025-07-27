@@ -7,7 +7,10 @@ function App() {
     setMessage('');
     setIsError(false);
     try {
-      const res = await fetch(url);
+      // Use the local server as a proxy so downloads work even when the remote host blocks CORS
+      const res = await fetch(
+        `http://localhost:5000/proxy?url=${encodeURIComponent(url)}`
+      );
       if (!res.ok) throw new Error('Failed to fetch file');
       const blob = await res.blob();
       const a = document.createElement('a');
