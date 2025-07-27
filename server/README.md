@@ -9,4 +9,10 @@ npm install
 npm start
 ```
 
-The server listens on port 5000 by default.
+Create a `.env` file to override the default port:
+
+```bash
+PORT=3000
+```
+
+The server listens on port `5000` if no `PORT` is specified.
